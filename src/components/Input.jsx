@@ -1,21 +1,18 @@
 export default function Input({ label, error, register, name, type = 'text', ...rest }) {
   return (
-    <div style={{ marginBottom: '1rem' }}>
-      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 500 }}>{label}</label>
+    <div className="mb-4">
+      <label className="block mb-1 font-medium text-sm text-slate-700">{label}</label>
       <input
         type={type}
         {...register(name)}
         {...rest}
-        style={{
-          width: '100%',
-          padding: '8px 12px',
-          border: `1px solid ${error ? 'red' : '#cbd5e1'}`,
-          borderRadius: '6px',
-          outline: 'none',
-          fontSize: '14px',
-        }}
+        className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition
+          ${error
+            ? 'border-red-400 focus:ring-2 focus:ring-red-200'
+            : 'border-slate-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400'
+          }`}
       />
-      {error && <p style={{ color: 'red', fontSize: '12px', marginTop: '4px' }}>{error.message}</p>}
+      {error && <p className="text-red-500 text-xs mt-1">{error.message}</p>}
     </div>
   );
 }

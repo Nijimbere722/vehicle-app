@@ -16,7 +16,7 @@ export default function Home() {
 
   if (isLoading) return (
     <div className="flex items-center justify-center h-64">
-      <p className="text-gray-500 text-lg">Loading vehicles...</p>
+      <p className="text-gray-500 text-lg animate-pulse">Loading vehicles...</p>
     </div>
   );
 
@@ -28,13 +28,11 @@ export default function Home() {
 
   return (
     <div className="p-8">
-      {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Registered Vehicles</h1>
         <p className="text-gray-500 text-sm mt-1">Browse all registered vehicles in the system</p>
       </div>
 
-      {/* Table */}
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <table className="w-full">
           <thead>
@@ -71,16 +69,13 @@ export default function Home() {
           </tbody>
         </table>
 
-        {/* Empty state */}
         {vehicles?.length === 0 && (
           <div className="text-center py-16">
             <p className="text-slate-400 text-lg">No vehicles found.</p>
-            <p className="text-slate-300 text-sm mt-1">Registered vehicles will appear here.</p>
           </div>
         )}
       </div>
 
-      {/* Footer count */}
       {vehicles?.length > 0 && (
         <p className="text-sm text-slate-400 mt-4">
           Showing {vehicles.length} vehicle{vehicles.length !== 1 ? 's' : ''}

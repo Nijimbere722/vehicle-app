@@ -17,31 +17,80 @@ export default function Login() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '4rem auto', padding: '2rem', border: '1px solid #e2e8f0', borderRadius: '8px' }}>
-      <h2 style={{ marginBottom: '1.5rem' }}>Login</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label>Email</label>
-          <input {...register('email', { required: 'Email is required' })}
-            style={{ display: 'block', width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '6px', marginTop: '4px' }}
-          />
-          {errors.email && <p style={{ color: 'red', fontSize: '12px' }}>{errors.email.message}</p>}
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8">
+
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-slate-800">Welcome Back</h1>
+          <p className="text-slate-400 text-sm mt-2">Sign in to manage vehicles</p>
         </div>
 
-        <div style={{ marginBottom: '1rem' }}>
-          <label>Password</label>
-          <input type="password" {...register('password', { required: 'Password is required' })}
-            style={{ display: 'block', width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '6px', marginTop: '4px' }}
-          />
-          {errors.password && <p style={{ color: 'red', fontSize: '12px' }}>{errors.password.message}</p>}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              {...register('email', { required: 'Email is required' })}
+              placeholder="test@gmail.com"
+              className={`w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition
+                ${errors.email
+                  ? 'border-red-400 focus:ring-2 focus:ring-red-200'
+                  : 'border-slate-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400'
+                }`}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+            )}
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              {...register('password', { required: 'Password is required' })}
+              placeholder="••••••••"
+              className={`w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition
+                ${errors.password
+                  ? 'border-red-400 focus:ring-2 focus:ring-red-200'
+                  : 'border-slate-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400'
+                }`}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+            )}
+          </div>
+
+          {/* Invalid credentials error */}
+          {errors.root && (
+            <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+              <p className="text-red-600 text-sm">{errors.root.message}</p>
+            </div>
+          )}
+
+          {/* Submit */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition duration-200"
+          >
+            Sign In
+          </button>
+
+        </form>
+
+        {/* Hint */}
+        <div className="mt-6 bg-slate-50 rounded-lg px-4 py-3 text-center">
+          <p className="text-xs text-slate-400">Use: <span className="font-medium text-slate-600">test@gmail.com</span> / <span className="font-medium text-slate-600">Password!234</span></p>
         </div>
 
-        {errors.root && <p style={{ color: 'red', marginBottom: '1rem' }}>{errors.root.message}</p>}
-
-        <button type="submit" style={{ width: '100%', padding: '10px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-          Login
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

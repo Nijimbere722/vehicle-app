@@ -11,14 +11,14 @@ export default function Sidebar() {
   };
 
   return (
-    <nav style={{ padding: '1rem', background: '#1e293b', color: 'white', display: 'flex', gap: '1rem' }}>
-      <Link to="/" style={{ color: 'white' }}>Home</Link>
-      {isAuthenticated && <Link to="/dashboard" style={{ color: 'white' }}>Dashboard</Link>}
-      {isAuthenticated && <Link to="/vehicle/new" style={{ color: 'white' }}>Register Vehicle</Link>}
+    <nav className="p-4 bg-slate-800 text-white flex gap-4">
+      <Link to="/" className="text-white">Home</Link>
+      {isAuthenticated && <Link to="/dashboard" className="text-white">Dashboard</Link>}
+      {isAuthenticated && <Link to="/vehicle/new" className="text-white">Register Vehicle</Link>}
       {isAuthenticated ? (
-        <button onClick={handleLogout} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Logout</button>
+        <button onClick={handleLogout} className="text-white bg-transparent border-none cursor-pointer">Logout</button>
       ) : (
-        <Link to="/login" style={{ color: 'white' }}>Login</Link>
+        <Link to="/login" className="text-white">Login</Link>
       )}
     </nav>
   );

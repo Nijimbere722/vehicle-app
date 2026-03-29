@@ -17,52 +17,132 @@ export default function Dashboard() {
     });
   };
 
-  if (isLoading) return <p style={{ padding: '2rem' }}>Loading...</p>;
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case 'NEW': return 'bg-green-100 text-green-700';
+      case 'USED': return 'bg-yellow-100 text-yellow-700';
+      case 'REBUILT': return 'bg-red-100 text-red-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  if (isLoading) return (
+    <div className="flex items-center justify-center h-64">
+      <p className="text-slate-400 animate-pulse">Loading dashboard...</p>
+    </div>
+  );
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-        <h2>Dashboard</h2>
-        <button onClick={() => navigate('/vehicle/new')}
-          style={{ padding: '10px 20px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+    <div className="p-8 max-w-7xl mx-auto">
+
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
+          <p className="text-slate-400 text-sm mt-1">Manage all registered vehicles</p>
+        </div>
+        <button
+          onClick={() => navigate('/vehicle/new')}
+          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+        >
           + Register Vehicle
         </button>
       </div>
 
-      <div style={{ background: '#f1f5f9', padding: '1rem', borderRadius: '8px', marginBottom: '2rem' }}>
-        <strong>Total Vehicles:</strong> {vehicles?.length ?? 0}
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <p className="text-xs text-slate-400 uppercase font-semibold tracking-wider">Total Vehicles</p>
+          <p className="text-3xl font-bold text-slate-800 mt-1">{vehicles?.length ?? 0}</p>
+        </div>
+        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <p className="text-xs text-slate-400 uppercase font-semibold tracking-wider">New</p>
+          <p className="text-3xl font-bold text-slate-800 mt-1">
+            {vehicles?.filter(v => v.vehicleStatus === 'NEW').length ?? 0}
+          </p>
+        </div>
+        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <p className="text-xs text-slate-400 uppercase font-semibold tracking-wider">Used</p>
+          <p className="text-3xl font-bold text-slate-800 mt-1">
+            {vehicles?.filter(v => v.vehicleStatus === 'USED').length ?? 0}
+          </p>
+        </div>
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ background: '#f1f5f9' }}>
-            <th style={th}>Manufacture</th>
-            <th style={th}>Model</th>
-            <th style={th}>Year</th>
-            <th style={th}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {vehicles?.map((v) => (
-            <tr key={v.id}>
-              <td style={td}>{v.manufacture}</td>
-              <td style={td}>{v.model}</td>
-              <td style={td}>{v.year}</td>
-              <td style={td}>
-                <button onClick={() => navigate(`/vehicle/${v.id}`)}
-                  style={{ marginRight: '8px', padding: '4px 10px', borderRadius: '4px', border: '1px solid #3b82f6', color: '#3b82f6', cursor: 'pointer', background: 'none' }}>
-                  View
-                </button>
-                <button onClick={() => setDeleteId(v.id)}
-                  style={{ padding: '4px 10px', borderRadius: '4px', border: 'none', background: 'red', color: 'white', cursor: 'pointer' }}>
-                  Delete
-                </button>
-              </td>
+      {/* Table */}
+      <div className="bg-white rounded-2xl shadow overflow-hidden">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-slate-50 border-b border-slate-200">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Manufacture</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Model</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Year</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Fuel Type</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {vehicles?.map((v) => (
+              <tr key={v.id} className="hover:bg-slate-50 transition-colors duration-150">
+                <td className="px-6 py-4 text-sm font-medium text-slate-800">{v.manufacture}</td>
+                <td className="px-6 py-4 text-sm text-slate-600">{v.model}</td>
+                <td className="px-6 py-4 text-sm text-slate-600">{v.year}</td>
+                <td className="px-6 py-4 text-sm text-slate-600">{v.fuelType}</td>
+                <td className="px-6 py-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(v.vehicleStatus)}`}>
+                    {v.vehicleStatus}
+                  </span>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => navigate(`/vehicle/${v.id}`)}
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-blue-500 text-blue-600 hover:bg-blue-50 transition"
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={() => navigate(`/vehicle/${v.id}/edit`)}
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => setDeleteId(v.id)}
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg bg-red-500 hover:bg-red-600 text-white transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
+        {/* Empty state */}
+        {vehicles?.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-slate-400 text-lg">No vehicles registered yet.</p>
+            <button
+              onClick={() => navigate('/vehicle/new')}
+              className="mt-4 px-5 py-2.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+            >
+              Register your first vehicle
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Footer count */}
+      {vehicles?.length > 0 && (
+        <p className="text-sm text-slate-400 mt-4">
+          Showing {vehicles.length} vehicle{vehicles.length !== 1 ? 's' : ''}
+        </p>
+      )}
+
+      {/* Delete Modal */}
       <Modal
         isOpen={!!deleteId}
         onClose={() => setDeleteId(null)}
@@ -72,6 +152,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-const th = { padding: '10px', textAlign: 'left', borderBottom: '1px solid #e2e8f0' };
-const td = { padding: '10px', borderBottom: '1px solid #e2e8f0' };
